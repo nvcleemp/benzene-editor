@@ -1,0 +1,69 @@
+
+#root {
+    -fx-background-image: url("img/hex.png");
+    -fx-background-repeat: repeat;
+}
+
+#control-panel {
+    -fx-background-color: transparent;
+    -fx-border-color: black;
+    -fx-border-style: solid;
+    -fx-border-width: 3px;
+    -fx-border-radius: 4px;
+    -fx-border-insets: 5px;
+    -fx-padding: 0px;
+}
+
+#replay-panel {
+    -fx-border-color: black;
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+}
+
+.turn-button {
+    -fx-border-color: black;
+    -fx-border-style: solid;
+    -fx-border-width: 2px 1px 1px 1px;
+    -fx-border-insets: 0px;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-padding: 3px;
+    -fx-background-color: white;
+}
+
+.turn-button:disabled {
+    -fx-background-color: lightgray;
+    -fx-text-fill: gray;
+}
+
+#game-panel {
+    -fx-background-color: transparent;
+    -fx-border-color: black;
+    -fx-border-style: solid;
+    -fx-border-width: 3px;
+    -fx-border-radius: 4px;
+    -fx-border-insets: 5px;
+    -fx-padding: 0px;
+}
+
+.deck-panel {
+    -fx-background-color: transparent, lightgray;
+    -fx-border-color: black;
+    -fx-border-style: solid;
+    -fx-border-width: 3px;
+    -fx-border-radius: 4px;
+    -fx-border-insets: 5px;
+    -fx-background-insets: 0px, 5px;
+}
+
+.deck-view {
+    -fx-alignment: center;
+}
+
+.deck-view.active {
+    // -fx-background-color: red;
+}
+
+.deck-view.passive {
+    -fx-background-color: gray;
+}
