@@ -5,8 +5,10 @@ import benzene.editor.Benzene;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -53,23 +55,22 @@ public class BenzeneExporter {
     public static String exportSage(Benzene benzene){
         Set<Location> vertices = new HashSet<>();
         benzene.locations().forEach(l -> vertices.addAll(vertices(l)));
+        List<Location> verticesL = new ArrayList<>(vertices);
+        Map<Location, Integer> vertex2index = new HashMap<>();
+        for (int i = 0; i < verticesL.size(); i++) {
+            vertex2index.put(verticesL.get(i), i);
+        }
         Set<Pair<Location, Location>> edges = new HashSet<>();
         benzene.locations().forEach(l -> edges.addAll(edges(l)));
         
         List<String> instructions = new ArrayList<>();
-        instructions.add("g = Graph()");
-        instructions.add(String.format("g.add_vertices([%s])",
-                String.join(", ", 
-                        vertices.stream()
-                            .map(v -> String.format("(%d,%d)", v.col, v.row))
-                            .collect(Collectors.toCollection(ArrayList::new)))));
+        instructions.add(String.format("g = Graph(%d)", vertices.size()));
         instructions.add(String.format("g.add_edges([%s])",
                 String.join(", ", 
                         edges.stream()
-                            .map(e -> String.format("((%d,%d),(%d,%d))",
-                                    e.first.col, e.first.row, e.second.col, e.second.row))
+                            .map(e -> String.format("(%d,%d)",
+                                    vertex2index.get(e.first), vertex2index.get(e.second)))
                             .collect(Collectors.toCollection(ArrayList::new)))));
-        instructions.add("g.relabel()");
         
         return String.join("\n", instructions);
     }
