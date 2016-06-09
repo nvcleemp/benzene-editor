@@ -97,4 +97,9 @@ public class BenzeneExporter {
         
         return String.join("\n", instructions);
     }
+    
+    public static String exportLaTeX(Benzene benzene){
+        return "\\documentclass[tikz]{standalone}\n\\begin{document}\n\n" + 
+                exportTikZ(benzene) + "\n\n\\end{document}";
+    }
 }
