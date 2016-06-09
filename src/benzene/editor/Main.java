@@ -44,15 +44,31 @@ public class Main extends Application {
 
         Menu menuBenzene = new Menu("Benzene");
         
-        MenuItem export = new MenuItem("Export Sage");
-        export.setOnAction((ActionEvent t) -> {
+        MenuItem exportSage = new MenuItem("Export Sage");
+        exportSage.setOnAction((ActionEvent t) -> {
             ClipboardContent content = new ClipboardContent();
             content.putString(BenzeneExporter.exportSage(benzene));
             Clipboard.getSystemClipboard().setContent(content);
             new Alert(Alert.AlertType.INFORMATION, "Code copied to clipboard", ButtonType.OK).show();
         });
         
-        menuBenzene.getItems().add(export);
+        MenuItem exportTikz = new MenuItem("Export Tikz");
+        exportTikz.setOnAction((ActionEvent t) -> {
+            ClipboardContent content = new ClipboardContent();
+            content.putString(BenzeneExporter.exportTikZ(benzene));
+            Clipboard.getSystemClipboard().setContent(content);
+            new Alert(Alert.AlertType.INFORMATION, "Code copied to clipboard", ButtonType.OK).show();
+        });
+        
+        MenuItem exportLaTeX = new MenuItem("Export LaTeX");
+        exportLaTeX.setOnAction((ActionEvent t) -> {
+            ClipboardContent content = new ClipboardContent();
+            content.putString(BenzeneExporter.exportLaTeX(benzene));
+            Clipboard.getSystemClipboard().setContent(content);
+            new Alert(Alert.AlertType.INFORMATION, "Code copied to clipboard", ButtonType.OK).show();
+        });
+        
+        menuBenzene.getItems().addAll(exportSage, exportTikz, exportLaTeX);
  
         menuBar.getMenus().add(menuBenzene);
         
