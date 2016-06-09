@@ -37,7 +37,7 @@ public class Main extends Application {
 
     private Parent layout(final Benzene benzene) {
         BorderPane root = new BorderPane();
-        root.setPrefSize(300, 275);
+        root.setPrefSize(800, 600);
         root.setId("root");
         
         MenuBar menuBar = new MenuBar();
