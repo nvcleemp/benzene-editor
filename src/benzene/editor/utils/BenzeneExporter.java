@@ -74,4 +74,27 @@ public class BenzeneExporter {
         
         return String.join("\n", instructions);
     }
+    
+    public static String exportTikZ(Benzene benzene){
+        Set<Location> vertices = new HashSet<>();
+        benzene.locations().forEach(l -> vertices.addAll(vertices(l)));
+        Set<Pair<Location, Location>> edges = new HashSet<>();
+        benzene.locations().forEach(l -> edges.addAll(edges(l)));
+        
+        List<String> instructions = new ArrayList<>();
+        instructions.add("\\begin{tikzpicture}[every node/.style={circle, fill, inner sep=1pt},every edge/.style={draw}]");
+        instructions.addAll(vertices.stream()
+                .map(v -> String.format("    \\node (%d_%d) at (%f,%f) {};", 
+                        v.col, v.row, 
+                        v.col*Math.sqrt(3)/2, 
+                        v.row % 2 == 0 ? -1.5*v.row/2 : -1.5*(v.row - 1)/2 - 1))
+                .collect(Collectors.toCollection(ArrayList::new)));
+        instructions.addAll(edges.stream()
+                .map(e -> String.format("    \\path (%d_%d) edge (%d_%d);",
+                        e.first.col, e.first.row, e.second.col, e.second.row))
+                .collect(Collectors.toCollection(ArrayList::new)));
+        instructions.add("\\end{tikzpicture}");
+        
+        return String.join("\n", instructions);
+    }
 }
