@@ -8,8 +8,8 @@
     -fx-background-color: transparent;
     -fx-border-color: black;
     -fx-border-style: solid;
-    -fx-border-width: 3px;
+    -fx-border-width: 2px;
     -fx-border-radius: 4px;
-    -fx-border-insets: 5px;
+    -fx-border-insets: 12px;
     -fx-padding: 0px;
 }
