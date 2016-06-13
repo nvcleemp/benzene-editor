@@ -18,6 +18,10 @@ public class BenzeneView extends Pane implements InvalidationListener {
     private final Region parent;
     private boolean showNeighbouringHexagons;
 
+    public BenzeneView(Benzene benzene) {
+        this(null, benzene, false);
+    }
+
     public BenzeneView(Region parent, Benzene benzene) {
         this(parent, benzene, true);
     }
