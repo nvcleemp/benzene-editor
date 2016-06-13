@@ -82,7 +82,7 @@ public class Main extends Application {
         NoneFocusScrollPane gamePane = new NoneFocusScrollPane();
         gamePane.setContent(new BenzeneView(gamePane, benzene));
         root.setCenter(gamePane);
-        root.getCenter().setId("game-panel");
+        root.getCenter().setId("editor");
 
         return root;
     }

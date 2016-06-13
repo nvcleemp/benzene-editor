@@ -4,7 +4,7 @@
     -fx-background-repeat: repeat;
 }
 
-#game-panel {
+#editor {
     -fx-background-color: transparent;
     -fx-border-color: black;
     -fx-border-style: solid;
