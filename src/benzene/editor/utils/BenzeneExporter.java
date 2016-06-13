@@ -1,7 +1,10 @@
 package benzene.editor.utils;
 
 import benzene.editor.Benzene;
+import benzene.editor.gui.BenzeneView;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -10,7 +13,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.image.Image;
+import javafx.stage.FileChooser;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -101,5 +111,28 @@ public class BenzeneExporter {
     public static String exportLaTeX(Benzene benzene){
         return "\\documentclass[tikz]{standalone}\n\\begin{document}\n\n" + 
                 exportTikZ(benzene) + "\n\n\\end{document}";
+    }
+    
+    private static final FileChooser fileChooser = new FileChooser();
+    
+    public static void exportPng(Benzene benzene){
+        BenzeneView view = new BenzeneView(benzene);
+        view.invalidated(benzene);
+        Image img = view.snapshot(new SnapshotParameters(), null);
+        
+        fileChooser.setTitle("Save PNG image");
+        fileChooser.getExtensionFilters().clear();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG image", "*.png"));
+        File f = fileChooser.showSaveDialog(null);
+        
+        if(f != null){
+            try {
+                ImageIO.write(SwingFXUtils.fromFXImage(img, null), "png", f);
+            } catch (IOException ex) {
+                Logger.getLogger(BenzeneExporter.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        benzene.removeListener(view);
     }
 }
