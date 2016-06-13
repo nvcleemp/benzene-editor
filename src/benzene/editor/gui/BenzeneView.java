@@ -28,8 +28,10 @@ public class BenzeneView extends Pane implements InvalidationListener {
         this.parent = parent;
         this.showNeighbouringHexagons = showNeighbouringHexagons;
         benzene.addListener(this);
-        parent.widthProperty().addListener(this);
-        parent.heightProperty().addListener(this);
+        if(parent!=null){
+            parent.widthProperty().addListener(this);
+            parent.heightProperty().addListener(this);
+        }
     }
 
     @Override
@@ -42,8 +44,8 @@ public class BenzeneView extends Pane implements InvalidationListener {
 
     private void draw() {
         getChildren().clear();
-        double verticalCenter = parent.getHeight() / 2,
-               horizontalCenter = parent.getWidth() / 2,
+        double verticalCenter = parent == null ? 0 : parent.getHeight() / 2,
+               horizontalCenter = parent == null ? 0 : parent.getWidth() / 2,
                verticalOffset = verticalCenter - Math.sqrt(0.75) * RADIUS,
                horizontalOffset = horizontalCenter - RADIUS;
         if(benzene.isEmpty()) {
