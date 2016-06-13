@@ -68,7 +68,12 @@ public class Main extends Application {
             new Alert(Alert.AlertType.INFORMATION, "Code copied to clipboard", ButtonType.OK).show();
         });
         
-        menuBenzene.getItems().addAll(exportSage, exportTikz, exportLaTeX);
+        MenuItem exportPng = new MenuItem("Export PNG");
+        exportPng.setOnAction((ActionEvent t) -> {
+            BenzeneExporter.exportPng(benzene);
+        });
+        
+        menuBenzene.getItems().addAll(exportSage, exportTikz, exportLaTeX, exportPng);
  
         menuBar.getMenus().add(menuBenzene);
         
