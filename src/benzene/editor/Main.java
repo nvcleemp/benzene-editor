@@ -43,6 +43,8 @@ public class Main extends Application {
         root.setId("root");
         
         MenuBar menuBar = new MenuBar();
+        
+        Menu menuFile = new Menu("File");
 
         Menu menuExport = new Menu("Export");
         
@@ -76,6 +78,8 @@ public class Main extends Application {
         });
         
         menuExport.getItems().addAll(exportSage, exportTikz, exportLaTeX, exportPng);
+        
+        menuFile.getItems().addAll(menuExport);
         
         Menu menuEdit = new Menu("Edit");
         
@@ -115,7 +119,7 @@ public class Main extends Application {
         
         menuView.getItems().addAll(zoomIn, zoomOut, new SeparatorMenuItem(), zoom100);
         
-        menuBar.getMenus().addAll(menuExport, menuEdit, menuView);
+        menuBar.getMenus().addAll(menuFile, menuEdit, menuView);
         
         root.setTop(menuBar);
 
