@@ -84,7 +84,17 @@ public class Main extends Application {
             benzene.clear();
         });
         
-        menuEdit.getItems().addAll(clear);
+        MenuItem rotateClockwise = new MenuItem("Rotate Clockwise");
+        rotateClockwise.setOnAction((ActionEvent t) -> {
+            benzene.rotateClockwise();
+        });
+        
+        MenuItem rotateCounterclockwise = new MenuItem("Rotate Counterclockwise");
+        rotateCounterclockwise.setOnAction((ActionEvent t) -> {
+            benzene.rotateCounterclockwise();
+        });
+        
+        menuEdit.getItems().addAll(clear, new SeparatorMenuItem(), rotateClockwise, rotateCounterclockwise);
  
         Menu menuView = new Menu("View");
         
