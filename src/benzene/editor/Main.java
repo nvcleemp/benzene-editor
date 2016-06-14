@@ -42,7 +42,7 @@ public class Main extends Application {
 
         MenuBar menuBar = new MenuBar();
 
-        Menu menuBenzene = new Menu("Benzene");
+        Menu menuExport = new Menu("Export");
         
         MenuItem exportSage = new MenuItem("Export Sage");
         exportSage.setOnAction((ActionEvent t) -> {
@@ -73,7 +73,7 @@ public class Main extends Application {
             BenzeneExporter.exportPng(benzene);
         });
         
-        menuBenzene.getItems().addAll(exportSage, exportTikz, exportLaTeX, exportPng);
+        menuExport.getItems().addAll(exportSage, exportTikz, exportLaTeX, exportPng);
         
         Menu menuEdit = new Menu("Edit");
         
@@ -84,7 +84,7 @@ public class Main extends Application {
         
         menuEdit.getItems().addAll(clear);
  
-        menuBar.getMenus().addAll(menuBenzene, menuEdit);
+        menuBar.getMenus().addAll(menuExport, menuEdit);
         
         root.setTop(menuBar);
         
