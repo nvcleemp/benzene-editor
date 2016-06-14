@@ -5,6 +5,7 @@ import benzene.editor.utils.Model;
 import benzene.editor.utils.Location;
 import benzene.editor.utils.Orientation;
 
+import java.util.Collection;
 import java.util.stream.Stream;
 import java.util.HashSet;
 import java.util.Set;
@@ -97,6 +98,14 @@ public class Benzene extends Model {
 
     public void rotateCounterclockwise() {
         privateRotateCounterclockwise();
+        invalidate();
+    }
+    
+    public void set(Collection<Location> locations){
+        privateClear();
+        for (Location location : locations) {
+            privateToggle(location);
+        }
         invalidate();
     }
 
