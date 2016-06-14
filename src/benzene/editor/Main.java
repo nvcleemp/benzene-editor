@@ -39,7 +39,7 @@ public class Main extends Application {
         BorderPane root = new BorderPane();
         root.setPrefSize(800, 600);
         root.setId("root");
-        
+
         MenuBar menuBar = new MenuBar();
 
         Menu menuBenzene = new Menu("Benzene");
@@ -74,11 +74,20 @@ public class Main extends Application {
         });
         
         menuBenzene.getItems().addAll(exportSage, exportTikz, exportLaTeX, exportPng);
+        
+        Menu menuEdit = new Menu("Edit");
+        
+        MenuItem clear = new MenuItem("Clear");
+        clear.setOnAction((ActionEvent t) -> {
+            benzene.clear();
+        });
+        
+        menuEdit.getItems().addAll(clear);
  
-        menuBar.getMenus().add(menuBenzene);
+        menuBar.getMenus().addAll(menuBenzene, menuEdit);
         
         root.setTop(menuBar);
-
+        
         NoneFocusScrollPane gamePane = new NoneFocusScrollPane();
         gamePane.setContent(new BenzeneView(gamePane, benzene));
         root.setCenter(gamePane);
