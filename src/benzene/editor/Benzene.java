@@ -57,10 +57,19 @@ public class Benzene extends Model {
         }
     }
 
+    private void privateClear() {
+        hexes.clear();
+    }
+
     /* Public (complete) operations (invalidating) ================ */
 
     public void toggle(Location location) {
         privateToggle(location);
+        invalidate();
+    }
+
+    public void clear() {
+        privateClear();
         invalidate();
     }
 
