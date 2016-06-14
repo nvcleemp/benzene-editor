@@ -3,6 +3,7 @@ package benzene.editor;
 import benzene.editor.gui.BenzeneView;
 import benzene.editor.gui.NoneFocusScrollPane;
 import benzene.editor.utils.BenzeneExporter;
+import benzene.editor.utils.IntegerModel;
 
 import javafx.application.Application;
 import javafx.scene.Parent;
@@ -15,6 +16,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 
@@ -23,7 +25,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Benzene benzene = new Benzene();
-        Parent root = layout(benzene);
+        Parent root = layout(benzene, new IntegerModel(0));
 
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("gui/style.css").toExternalForm());
@@ -35,11 +37,11 @@ public class Main extends Application {
         benzene.invalidate();
     }
 
-    private Parent layout(final Benzene benzene) {
+    private Parent layout(final Benzene benzene, final IntegerModel scaleModel) {
         BorderPane root = new BorderPane();
         root.setPrefSize(800, 600);
         root.setId("root");
-
+        
         MenuBar menuBar = new MenuBar();
 
         Menu menuExport = new Menu("Export");
@@ -84,12 +86,31 @@ public class Main extends Application {
         
         menuEdit.getItems().addAll(clear);
  
-        menuBar.getMenus().addAll(menuExport, menuEdit);
+        Menu menuView = new Menu("View");
+        
+        MenuItem zoomIn = new MenuItem("Zoom in");
+        zoomIn.setOnAction((ActionEvent t) -> {
+            scaleModel.increase();
+        });
+        
+        MenuItem zoomOut = new MenuItem("Zoom out");
+        zoomOut.setOnAction((ActionEvent t) -> {
+            scaleModel.decrease();
+        });
+        
+        MenuItem zoom100 = new MenuItem("Reset Zoom");
+        zoom100.setOnAction((ActionEvent t) -> {
+            scaleModel.setValue(0);
+        });
+        
+        menuView.getItems().addAll(zoomIn, zoomOut, new SeparatorMenuItem(), zoom100);
+        
+        menuBar.getMenus().addAll(menuExport, menuEdit, menuView);
         
         root.setTop(menuBar);
-        
+
         NoneFocusScrollPane gamePane = new NoneFocusScrollPane();
-        gamePane.setContent(new BenzeneView(gamePane, benzene));
+        gamePane.setContent(new BenzeneView(gamePane, benzene, scaleModel));
         root.setCenter(gamePane);
         root.getCenter().setId("editor");
 
