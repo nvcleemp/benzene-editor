@@ -2,8 +2,12 @@ package benzene.editor;
 
 import benzene.editor.gui.BenzeneView;
 import benzene.editor.gui.NoneFocusScrollPane;
+import benzene.editor.io.BenzeneLoader;
+import benzene.editor.io.BenzeneSaver;
 import benzene.editor.utils.BenzeneExporter;
 import benzene.editor.utils.IntegerModel;
+
+import java.io.File;
 
 import javafx.application.Application;
 import javafx.scene.Parent;
@@ -19,6 +23,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.stage.FileChooser;
 
 public class Main extends Application {
 
@@ -45,6 +50,32 @@ public class Main extends Application {
         MenuBar menuBar = new MenuBar();
         
         Menu menuFile = new Menu("File");
+        
+        FileChooser chooser = new FileChooser();
+        chooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Benzenoid XML", "*.xml"),
+                new FileChooser.ExtensionFilter("All files", "*")
+        );
+        
+        MenuItem load = new MenuItem("Load...");
+        BenzeneLoader loader = new BenzeneLoader(benzene);
+        load.setOnAction((ActionEvent t) -> {
+            File f = chooser.showOpenDialog(null);
+            if(f!=null)
+                if(!loader.load(f))
+                    new Alert(Alert.AlertType.ERROR, "Unable to load benzenoid", 
+                            ButtonType.OK).show();
+        });
+        
+        MenuItem save = new MenuItem("Save as...");
+        BenzeneSaver saver = new BenzeneSaver(benzene);
+        save.setOnAction((ActionEvent t) -> {
+            File f = chooser.showSaveDialog(null);
+            if(f!=null)
+                if(!saver.save(f))
+                    new Alert(Alert.AlertType.ERROR, "Error while saving benzenoid", 
+                            ButtonType.OK).show();
+        });
 
         Menu menuExport = new Menu("Export");
         
@@ -79,7 +110,7 @@ public class Main extends Application {
         
         menuExport.getItems().addAll(exportSage, exportTikz, exportLaTeX, exportPng);
         
-        menuFile.getItems().addAll(menuExport);
+        menuFile.getItems().addAll(load, save, new SeparatorMenuItem(), menuExport);
         
         Menu menuEdit = new Menu("Edit");
         
