@@ -8,6 +8,7 @@ import benzene.editor.utils.Orientation;
 import java.util.stream.Stream;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Benzene as a grid of hexagons.
@@ -60,6 +61,22 @@ public class Benzene extends Model {
     private void privateClear() {
         hexes.clear();
     }
+    
+    private void privateRotateClockwise() {
+        Set<Location> newHexes = hexes.stream()
+                .map(l -> new Location(l.col+l.row, -l.row))
+                .collect(Collectors.toCollection(HashSet::new));
+        hexes.clear();
+        hexes.addAll(newHexes);
+    }
+    
+    private void privateRotateCounterclockwise() {
+        Set<Location> newHexes = hexes.stream()
+                .map(l -> new Location(-l.col, l.col+l.row))
+                .collect(Collectors.toCollection(HashSet::new));
+        hexes.clear();
+        hexes.addAll(newHexes);
+    }
 
     /* Public (complete) operations (invalidating) ================ */
 
@@ -70,6 +87,16 @@ public class Benzene extends Model {
 
     public void clear() {
         privateClear();
+        invalidate();
+    }
+
+    public void rotateClockwise() {
+        privateRotateClockwise();
+        invalidate();
+    }
+
+    public void rotateCounterclockwise() {
+        privateRotateCounterclockwise();
         invalidate();
     }
 
