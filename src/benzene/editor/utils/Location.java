@@ -1,10 +1,18 @@
 
 package benzene.editor.utils;
 
+import javax.xml.bind.annotation.XmlAttribute;
+
 public class Location {
 
+    @XmlAttribute
     public final int row;
+    @XmlAttribute
     public final int col;
+    
+    private Location(){
+        row = col = 0;
+    }
 
     public Location(int row, int col) {
         this.row = row;
