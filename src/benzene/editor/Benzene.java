@@ -78,6 +78,14 @@ public class Benzene extends Model {
         hexes.clear();
         hexes.addAll(newHexes);
     }
+    
+    private void privateShift(Location newOrigin) {
+        Set<Location> newHexes = hexes.stream()
+                .map(l -> l.add(newOrigin))
+                .collect(Collectors.toCollection(HashSet::new));
+        hexes.clear();
+        hexes.addAll(newHexes);
+    }
 
     /* Public (complete) operations (invalidating) ================ */
 
@@ -106,6 +114,11 @@ public class Benzene extends Model {
         for (Location location : locations) {
             privateToggle(location);
         }
+        invalidate();
+    }
+    
+    public void shift(Location newOrigin){
+        privateShift(newOrigin);
         invalidate();
     }
 
