@@ -6,6 +6,7 @@ import benzene.editor.io.BenzeneLoader;
 import benzene.editor.io.BenzeneSaver;
 import benzene.editor.utils.BenzeneExporter;
 import benzene.editor.utils.IntegerModel;
+import benzene.editor.utils.Location;
 
 import java.io.File;
 
@@ -129,7 +130,29 @@ public class Main extends Application {
             benzene.rotateCounterclockwise();
         });
         
-        menuEdit.getItems().addAll(clear, new SeparatorMenuItem(), rotateClockwise, rotateCounterclockwise);
+        MenuItem shiftRight = new MenuItem("Shift Right");
+        shiftRight.setOnAction((ActionEvent t) -> {
+            benzene.shift(new Location(0, 1));
+        });
+        
+        MenuItem shiftLeft = new MenuItem("Shift Left");
+        shiftLeft.setOnAction((ActionEvent t) -> {
+            benzene.shift(new Location(0, -1));
+        });
+        
+        MenuItem shiftUp = new MenuItem("Shift Up");
+        shiftUp.setOnAction((ActionEvent t) -> {
+            benzene.shift(new Location(-2, 1));
+        });
+        
+        MenuItem shiftDown = new MenuItem("Shift Down");
+        shiftDown.setOnAction((ActionEvent t) -> {
+            benzene.shift(new Location(2, -1));
+        });
+        
+        menuEdit.getItems().addAll(clear, new SeparatorMenuItem(), rotateClockwise,
+                rotateCounterclockwise, new SeparatorMenuItem(), shiftRight, 
+                shiftLeft, shiftUp, shiftDown);
  
         Menu menuView = new Menu("View");
         
