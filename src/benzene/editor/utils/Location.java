@@ -40,4 +40,8 @@ public class Location {
         return new Location(row + dr, col + dc);
     }
 
+    public Location add(Location location) {
+        return add(location.row, location.col);
+    }
+
 }
