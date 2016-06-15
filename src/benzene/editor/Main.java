@@ -53,7 +53,7 @@ public class Main extends Application {
         
         FileChooser chooser = new FileChooser();
         chooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Benzenoid XML", "*.xml"),
+                new FileChooser.ExtensionFilter("Benzenoid XML (*.xml)", "*.xml"),
                 new FileChooser.ExtensionFilter("All files", "*")
         );
         
