@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.swing.text.Document;
 
 /**
  * Objects of this class can be used to check whether the associated benzenoid
@@ -57,7 +59,34 @@ public class BenzeneValidator {
     }
     
     private boolean containsHoles(){
-        return false;
+        Set<Location> hexes = benzene.locations().collect(Collectors.toSet());
+        Set<Location> neighbouringHexes = benzene.locations()
+                .flatMap(l -> 
+                        Stream.of(Orientation.values()).map(o -> o.applyOffset(l)))
+                .filter(l -> !hexes.contains(l))
+                .collect(Collectors.toSet());
+        
+        Location startHex = neighbouringHexes.stream().findAny().orElse(null);
+        if(startHex==null){
+            return false;
+        }
+        Set<Location> visited = new HashSet<>();
+        RecursiveConsumer<Location> recursiveVisit = new RecursiveConsumer<>();
+        Consumer<Location> visit = l -> {
+            if(!visited.contains(l)){
+                visited.add(l);
+                for(Orientation orientation: Orientation.values()) {
+                    Location neighbour = orientation.applyOffset(l);
+                    if(neighbouringHexes.contains(neighbour)){
+                        recursiveVisit.consumer.accept(neighbour);
+                    }
+                }
+            }
+        };
+        recursiveVisit.consumer = visit;
+        visit.accept(startHex);
+        
+        return visited.size() != neighbouringHexes.size();
     }
     
     private static class RecursiveConsumer<T> {
