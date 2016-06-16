@@ -5,6 +5,7 @@ import benzene.editor.gui.NoneFocusScrollPane;
 import benzene.editor.io.BenzeneLoader;
 import benzene.editor.io.BenzeneSaver;
 import benzene.editor.utils.BenzeneExporter;
+import benzene.editor.utils.BenzeneValidator;
 import benzene.editor.utils.IntegerModel;
 import benzene.editor.utils.Location;
 
@@ -181,6 +182,15 @@ public class Main extends Application {
         gamePane.setContent(new BenzeneView(gamePane, benzene, scaleModel));
         gamePane.setId("editor");
         root.setCenter(gamePane);
+        
+        BenzeneValidator validator = new BenzeneValidator(benzene);
+        benzene.addListener(o -> {
+            if(validator.isValid()) {
+                gamePane.getStyleClass().removeAll("error");
+            } else {
+                gamePane.getStyleClass().add("error");
+            }
+        });
 
         return root;
     }
