@@ -13,3 +13,7 @@
     -fx-border-insets: 12px;
     -fx-padding: 0px;
 }
+
+#editor.error {
+    -fx-background-color: #ff0000cc;
+}
