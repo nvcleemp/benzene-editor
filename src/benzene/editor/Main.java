@@ -19,6 +19,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -48,6 +49,8 @@ public class Main extends Application {
         BorderPane root = new BorderPane();
         root.setPrefSize(800, 600);
         root.setId("root");
+        
+        BenzeneValidator validator = new BenzeneValidator(benzene);
         
         MenuBar menuBar = new MenuBar();
         
@@ -152,9 +155,16 @@ public class Main extends Application {
             benzene.shift(new Location(2, -1));
         });
         
+        Menu validationMenu = new Menu("Validation");
+        
+        CheckMenuItem catacondensed = new CheckMenuItem("Catacondensed");
+        catacondensed.selectedProperty().bindBidirectional(validator.getCatacondensed());
+        
+        validationMenu.getItems().addAll(catacondensed);
+        
         menuEdit.getItems().addAll(clear, new SeparatorMenuItem(), rotateClockwise,
                 rotateCounterclockwise, new SeparatorMenuItem(), shiftRight, 
-                shiftLeft, shiftUp, shiftDown);
+                shiftLeft, shiftUp, shiftDown, new SeparatorMenuItem(), validationMenu);
  
         Menu menuView = new Menu("View");
         
@@ -184,8 +194,14 @@ public class Main extends Application {
         gamePane.setId("editor");
         root.setCenter(gamePane);
         
-        BenzeneValidator validator = new BenzeneValidator(benzene);
         benzene.addListener(o -> {
+            if(validator.isValid()) {
+                gamePane.getStyleClass().removeAll("error");
+            } else {
+                gamePane.getStyleClass().add("error");
+            }
+        });
+        catacondensed.selectedProperty().addListener((obs, o, n) -> {
             if(validator.isValid()) {
                 gamePane.getStyleClass().removeAll("error");
             } else {
