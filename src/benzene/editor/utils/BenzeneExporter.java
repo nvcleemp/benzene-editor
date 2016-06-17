@@ -34,40 +34,6 @@ public class BenzeneExporter {
         this.benzene = benzene;
     }
     
-    private static Collection<Location> vertices(Location location){
-        int c = 2*location.col + location.row;
-        int r = 2*location.row;
-        return Arrays.asList(
-                new Location(r, c - 1),
-                new Location(r + 1, c - 1),
-                new Location(r + 2, c),
-                new Location(r + 1, c + 1),
-                new Location(r, c + 1),
-                new Location(r - 1, c)
-                );
-    }
-    
-    private static Collection<Pair<Location, Location>> edges(Location location){
-        int c = 2*location.col + location.row;
-        int r = 2*location.row;
-        Location[] ls = {
-                new Location(r, c - 1),
-                new Location(r + 1, c - 1),
-                new Location(r + 2, c),
-                new Location(r + 1, c + 1),
-                new Location(r, c + 1),
-                new Location(r - 1, c)
-        };
-        return Arrays.asList(
-                Pair.of(ls[0], ls[1]),
-                Pair.of(ls[1], ls[2]),
-                Pair.of(ls[2], ls[3]),
-                Pair.of(ls[4], ls[3]),
-                Pair.of(ls[5], ls[4]),
-                Pair.of(ls[0], ls[5])
-        );
-    }
-    
     public String exportSage(){
         Set<Location> vertices = new HashSet<>();
         benzene.locations().forEach(l -> vertices.addAll(vertices(l)));
@@ -140,5 +106,39 @@ public class BenzeneExporter {
         }
         
         benzene.removeListener(view);
+    }
+    
+    private static Collection<Location> vertices(Location location){
+        int c = 2*location.col + location.row;
+        int r = 2*location.row;
+        return Arrays.asList(
+                new Location(r, c - 1),
+                new Location(r + 1, c - 1),
+                new Location(r + 2, c),
+                new Location(r + 1, c + 1),
+                new Location(r, c + 1),
+                new Location(r - 1, c)
+                );
+    }
+    
+    private static Collection<Pair<Location, Location>> edges(Location location){
+        int c = 2*location.col + location.row;
+        int r = 2*location.row;
+        Location[] ls = {
+                new Location(r, c - 1),
+                new Location(r + 1, c - 1),
+                new Location(r + 2, c),
+                new Location(r + 1, c + 1),
+                new Location(r, c + 1),
+                new Location(r - 1, c)
+        };
+        return Arrays.asList(
+                Pair.of(ls[0], ls[1]),
+                Pair.of(ls[1], ls[2]),
+                Pair.of(ls[2], ls[3]),
+                Pair.of(ls[4], ls[3]),
+                Pair.of(ls[5], ls[4]),
+                Pair.of(ls[0], ls[5])
+        );
     }
 }
