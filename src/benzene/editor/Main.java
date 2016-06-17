@@ -80,11 +80,12 @@ public class Main extends Application {
         });
 
         Menu menuExport = new Menu("Export");
+        BenzeneExporter exporter = new BenzeneExporter(benzene);
         
         MenuItem exportSage = new MenuItem("Export Sage");
         exportSage.setOnAction((ActionEvent t) -> {
             ClipboardContent content = new ClipboardContent();
-            content.putString(BenzeneExporter.exportSage(benzene));
+            content.putString(exporter.exportSage());
             Clipboard.getSystemClipboard().setContent(content);
             new Alert(Alert.AlertType.INFORMATION, "Code copied to clipboard", ButtonType.OK).show();
         });
@@ -92,7 +93,7 @@ public class Main extends Application {
         MenuItem exportTikz = new MenuItem("Export Tikz");
         exportTikz.setOnAction((ActionEvent t) -> {
             ClipboardContent content = new ClipboardContent();
-            content.putString(BenzeneExporter.exportTikZ(benzene));
+            content.putString(exporter.exportTikZ());
             Clipboard.getSystemClipboard().setContent(content);
             new Alert(Alert.AlertType.INFORMATION, "Code copied to clipboard", ButtonType.OK).show();
         });
@@ -100,14 +101,14 @@ public class Main extends Application {
         MenuItem exportLaTeX = new MenuItem("Export LaTeX");
         exportLaTeX.setOnAction((ActionEvent t) -> {
             ClipboardContent content = new ClipboardContent();
-            content.putString(BenzeneExporter.exportLaTeX(benzene));
+            content.putString(exporter.exportLaTeX());
             Clipboard.getSystemClipboard().setContent(content);
             new Alert(Alert.AlertType.INFORMATION, "Code copied to clipboard", ButtonType.OK).show();
         });
         
         MenuItem exportPng = new MenuItem("Export PNG");
         exportPng.setOnAction((ActionEvent t) -> {
-            BenzeneExporter.exportPng(benzene);
+            exporter.exportPng();
         });
         
         menuExport.getItems().addAll(exportSage, exportTikz, exportLaTeX, exportPng);

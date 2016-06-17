@@ -28,6 +28,12 @@ import javax.imageio.ImageIO;
  */
 public class BenzeneExporter {
     
+    private final Benzene benzene;
+
+    public BenzeneExporter(Benzene benzene) {
+        this.benzene = benzene;
+    }
+    
     private static Collection<Location> vertices(Location location){
         int c = 2*location.col + location.row;
         int r = 2*location.row;
@@ -62,7 +68,7 @@ public class BenzeneExporter {
         );
     }
     
-    public static String exportSage(Benzene benzene){
+    public String exportSage(){
         Set<Location> vertices = new HashSet<>();
         benzene.locations().forEach(l -> vertices.addAll(vertices(l)));
         List<Location> verticesL = new ArrayList<>(vertices);
@@ -85,7 +91,7 @@ public class BenzeneExporter {
         return String.join("\n", instructions);
     }
     
-    public static String exportTikZ(Benzene benzene){
+    public String exportTikZ(){
         Set<Location> vertices = new HashSet<>();
         benzene.locations().forEach(l -> vertices.addAll(vertices(l)));
         Set<Pair<Location, Location>> edges = new HashSet<>();
@@ -108,14 +114,14 @@ public class BenzeneExporter {
         return String.join("\n", instructions);
     }
     
-    public static String exportLaTeX(Benzene benzene){
+    public String exportLaTeX(){
         return "\\documentclass[tikz]{standalone}\n\\begin{document}\n\n" + 
-                exportTikZ(benzene) + "\n\n\\end{document}";
+                exportTikZ() + "\n\n\\end{document}";
     }
     
-    private static final FileChooser fileChooser = new FileChooser();
+    private final FileChooser fileChooser = new FileChooser();
     
-    public static void exportPng(Benzene benzene){
+    public void exportPng(){
         BenzeneView view = new BenzeneView(benzene);
         view.invalidated(benzene);
         Image img = view.snapshot(new SnapshotParameters(), null);
