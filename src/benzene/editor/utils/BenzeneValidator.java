@@ -1,12 +1,18 @@
 package benzene.editor.utils;
 
 import benzene.editor.Benzene;
+
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
-import javax.swing.text.Document;
+
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.BooleanPropertyBase;
 
 /**
  * Objects of this class can be used to check whether the associated benzenoid
@@ -17,6 +23,19 @@ import javax.swing.text.Document;
 public class BenzeneValidator {
     
     private final Benzene benzene;
+    
+    private final BooleanProperty catacondensed = new BooleanPropertyBase(false){
+        
+        @Override
+        public Object getBean() {
+            return BenzeneValidator.this;
+        }
+
+        @Override
+        public String getName() {
+            return "catacondensed";
+        }
+    };
 
     public BenzeneValidator(Benzene benzene) {
         this.benzene = benzene;
@@ -27,6 +46,9 @@ public class BenzeneValidator {
             return false;
         }
         if(containsHoles()){
+            return false;
+        }
+        if(catacondensed.getValue() && !isCatacondensed()){
             return false;
         }
         return true;
@@ -87,6 +109,28 @@ public class BenzeneValidator {
         visit.accept(startHex);
         
         return visited.size() != neighbouringHexes.size();
+    }
+    
+    /*
+     * A valid benzenoid is catacondensed if no hexagon has a neighbour on two
+     * consecutive edges
+     */
+    private boolean isCatacondensed(){
+        Set<Location> hexes = benzene.locations().collect(Collectors.toSet());
+        Predicate<Location> hexagonValidator = l -> {
+            List<Boolean> isNeighbour = 
+                    Stream.of(Orientation.values())
+                            .map(o -> hexes.contains(o.applyOffset(l)))
+                            .collect(Collectors.toList());
+            
+            return !IntStream.range(0, 6).anyMatch(i -> isNeighbour.get(i) && isNeighbour.get((i+1)%6));
+        };
+        
+        return benzene.locations().allMatch(hexagonValidator);
+    }
+    
+    public BooleanProperty getCatacondensed(){
+        return catacondensed;
     }
     
     private static class RecursiveConsumer<T> {
